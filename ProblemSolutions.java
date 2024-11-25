@@ -12,6 +12,8 @@ import java.util.*;
 class ProblemSolutions {
 
     /**
+     * Grant Smith Comp 272
+     *
      * Method canFinish
      *
      * You are building a course curriculum along with required intermediate
