@@ -28,7 +28,7 @@ class ProblemSolutions {
      * in prerequisites. You want to avoid this embarrassment by making sure you define
      * a curriculum and exam schedule that can be completed.
      *
-     * You goal is to ensure that any student pursuing the certificate of 'master
+     * Your goal is to ensure that any student pursuing the certificate of 'master
      * programmer', can complete 'n' certification exams, each being specific to a
      * topic. Some exams have prerequisites of needing to take and pass earlier
      * certificate exams. You do not want to force any order of taking the exams, but
@@ -78,15 +78,55 @@ class ProblemSolutions {
                              int[][] prerequisites) {
       
         int numNodes = numExams;  // # of nodes in graph
-
         // Build directed graph's adjacency list
-        ArrayList<Integer>[] adj = getAdjList(numExams, 
-                                        prerequisites); 
+        ArrayList<Integer>[] adj = getAdjList(numExams,
+                prerequisites);
+        //DFS
+        boolean[] visted = new boolean[numNodes];
+        boolean[] onPath = new boolean[numNodes];
 
-        // ADD YOUR CODE HERE - ADD YOUR NAME / SECTION AT TOP OF FILE
-        return false;
+        for (int i = 0; i<numNodes; i++){
+            if (!visted[i]){
+                Stack<Integer> stack = new Stack<>();
+                stack.push(i);
+                while (!stack.isEmpty()) {
+                    int node = stack.peek();
 
+                    if (!visted[node]) {
+                        visted[node] = true;
+                        onPath[node] = true; //mark this node as being in the current path
+
+                        boolean hasUnvisitedNeighbor = false;
+                        for (int neighbor : adj[node]) {
+                            if (!visted[neighbor]) {
+                                stack.push(neighbor);
+                                hasUnvisitedNeighbor = true;
+                                break; //continue DFS
+                            } else if (onPath[neighbor]) {
+                                //if we revisit a node in the current path, we have a cycle
+                                return false;
+                            }
+                        }
+                        //mark node as not being in the current path if it has no unvisited neighbors
+                        if (!hasUnvisitedNeighbor) {
+                            onPath[node] = false;
+                            stack.pop();
+                        }
+                    } else {
+                        //if the top node has already been visited & was not on the path, mark as not on current path
+                        onPath[node] = false;
+                        stack.pop();
+                    }
+                }
+            }
+        }
+
+        return true; //no more cycles
     }
+
+
+
+
 
 
     /**
