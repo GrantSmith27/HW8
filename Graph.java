@@ -13,6 +13,8 @@ import java.util.List;
 
 
 /**
+ * Grant Smith Comp 272
+ *
  *  Graph traversal exercise
  *
  *  The Graph class is a representing an oversimplified Directed Graph of vertices
@@ -101,10 +103,32 @@ public class Graph {
    * and/or more than one root vertex, then return -1.
    * 
    */
-  
-  public int findRoot() {
 
-    // ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOUR NAME/SECTION AT TOP OF FILE
-    return -1;
-  } 
+  public int findRoot() {
+    //create an array to track incoming edges for each vertex
+    int[] incomingEdges = new int[numVertices];
+    //iterate through adjacency lists to count incoming edges
+    for (int i = 0; i < numVertices; i++) {
+      for (int dest : adjListArr[i]) {
+        incomingEdges[dest]++;
+      }
+    }
+    //find vertices with no incoming edges
+    int rootIndex = -1; //default is -1/no root found
+    for (int i = 0; i < numVertices; i++) {
+      if (incomingEdges[i] == 0) {
+        if (rootIndex != -1) {
+          //more than one root found
+          return -1;
+        }
+        rootIndex = i;
+      }
+    }
+    //if no root is found or more than one, return -1
+    if (rootIndex == -1) {
+      return -1;
+    }
+    //return the value of the root vertex
+    return vertexValues.get(rootIndex);
+  }
 }
